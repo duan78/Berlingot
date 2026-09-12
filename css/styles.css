@@ -924,3 +924,81 @@ strong { color: var(--c-ink); font-weight: 700; }
     }
     .reveal { opacity: 1; transform: none; }
 }
+
+/* ---------- Page « Les espaces » ---------- */
+.space-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+    padding-block: clamp(28px, 4vw, 48px);
+    border-bottom: 1px dashed color-mix(in srgb, var(--c-ink) 12%, transparent);
+}
+.space-row:last-of-type { border-bottom: none; }
+.space-row--reverse .space-photo { order: 2; }
+.space-photo {
+    position: relative;
+    margin: 0;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--c-coral) 18%, #fff), color-mix(in srgb, var(--c-lilac) 22%, #fff));
+    min-height: 280px;
+}
+.space-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform .4s var(--ease);
+}
+.space-row:hover .space-photo img { transform: scale(1.03); }
+.space-photo img.photo-missing { display: none; }
+.space-photo figcaption {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--c-ink-soft);
+    padding: 1rem;
+    text-align: center;
+}
+.space-photo img:not(.photo-missing) + figcaption {
+    position: static;
+    display: block;
+    padding: .5rem .75rem;
+    font-size: .85rem;
+    background: #fff;
+    text-align: center;
+}
+.space-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--c-cream);
+    font-family: var(--f-display, inherit);
+    font-weight: 700;
+    color: var(--c-ink);
+    margin-bottom: .75rem;
+}
+.space-text h3 {
+    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+    margin-bottom: .75rem;
+}
+.space-sub {
+    display: block;
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--c-ink-soft);
+    margin-top: .2rem;
+}
+.space-text p { color: var(--c-ink-soft); }
+@media (max-width: 860px) {
+    .space-row { grid-template-columns: 1fr; }
+    .space-row--reverse .space-photo { order: 0; }
+}
