@@ -1,0 +1,11 @@
+# robots.txt — L'Atelier Berlingot
+# https://latelierberlingot.com/
+
+User-agent: *
+Allow: /
+
+# Ressources techniques : pas besoin d'indexation
+Disallow: /.netlify/
+
+# Sitemap
+Sitemap: https://latelierberlingot.com/sitemap.xml
