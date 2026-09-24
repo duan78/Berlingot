@@ -6,6 +6,7 @@ Allow: /
 
 # Ressources techniques : pas besoin d'indexation
 Disallow: /.netlify/
+Disallow: /envoi.php
 
 # Sitemap
 Sitemap: https://latelierberlingot.com/sitemap.xml
