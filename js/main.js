@@ -5,7 +5,7 @@
    - Bouton "retour en haut"
    - Apparition au scroll (reveal)
    - Fermeture du menu au clic sur un lien
-   - Soumission du formulaire (démo, sans backend)
+   - Soumission du formulaire (envoi via envoi.php, repli client mail)
    ========================================================= */
 (function () {
     "use strict";
@@ -70,44 +70,82 @@
         revealTargets.forEach(function (el) { el.classList.add("is-visible"); });
     }
 
-    /* ---------- Formulaire de contact (démo) ---------- */
+    /* ---------- Formulaire de contact (envoi via envoi.php) ---------- */
     var form = document.querySelector(".contact-form");
     if (form) {
         var note = form.querySelector(".form-note");
+
+        // Message de retour après une soumission sans JavaScript (redirection envoi.php).
+        var statut = new URLSearchParams(location.search).get("statut");
+        if (statut === "ok" || statut === "erreur") {
+            if (note) {
+                note.textContent = statut === "ok"
+                    ? "Merci ! Votre message a bien été envoyé, nous vous répondrons vite."
+                    : "L'envoi a échoué. Vous pouvez nous écrire directement à eaje.atelierberlingot@gmail.com.";
+                note.classList.toggle("error", statut === "erreur");
+            }
+            history.replaceState(null, "", location.pathname);
+        }
+
+        function afficheNote(texte, erreur) {
+            if (!note) return;
+            note.textContent = texte;
+            note.classList.toggle("error", !!erreur);
+        }
+
+        // Repli si le serveur ne peut pas envoyer l'email (ex. preview sans PHP) :
+        // on propose l'ouverture du client mail pré-rempli.
+        function repliMailto() {
+            var name = form.querySelector("#cf-name").value.trim();
+            var email = form.querySelector("#cf-email").value.trim();
+            var msg = form.querySelector("#cf-msg").value.trim();
+            var subject = encodeURIComponent("Demande depuis le site — " + name);
+            var body = encodeURIComponent(
+                msg + "\n\n--\n" + name +
+                (form.querySelector("#cf-phone").value.trim() ? "\nTél : " + form.querySelector("#cf-phone").value.trim() : "") +
+                "\n" + email
+            );
+            afficheNote("Envoi direct impossible : votre logiciel de messagerie va s'ouvrir.", true);
+            window.location.href = "mailto:eaje.atelierberlingot@gmail.com?subject=" + subject + "&body=" + body;
+        }
+
         form.addEventListener("submit", function (e) {
             e.preventDefault();
-            // Vérification minimale
+            // Vérification minimale côté client.
             var name = form.querySelector("#cf-name");
             var email = form.querySelector("#cf-email");
             var msg = form.querySelector("#cf-msg");
             var emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
 
             if (!name.value.trim() || !emailValid || !msg.value.trim()) {
-                if (note) {
-                    note.textContent = "Merci de renseigner votre nom, un email valide et un message.";
-                    note.classList.add("error");
-                }
+                afficheNote("Merci de renseigner votre nom, un email valide et un message.", true);
                 return;
             }
 
-            // En l'absence de backend, on propose l'envoi via le client mail.
-            var subject = encodeURIComponent("Demande depuis le site — " + name.value.trim());
-            var body = encodeURIComponent(
-                msg.value.trim() + "\n\n--\n" + name.value.trim() +
-                (form.querySelector("#cf-phone").value.trim() ? "\nTél : " + form.querySelector("#cf-phone").value.trim() : "") +
-                "\n" + email.value.trim()
-            );
+            afficheNote("Envoi en cours…", false);
 
-            // Petite fête visuelle avant l'ouverture du client mail (sauf si motion réduite).
-            launchConfetti();
-
-            window.location.href = "mailto:contact@latelierberlingot.com?subject=" + subject + "&body=" + body;
-
-            if (note) {
-                note.textContent = "Merci ! Votre logiciel de messagerie va s'ouvrir.";
-                note.classList.remove("error");
-            }
-            form.reset();
+            fetch(form.action, {
+                method: "POST",
+                headers: { "X-Requested-With": "XMLHttpRequest" },
+                body: new FormData(form)
+            })
+                .then(function (res) {
+                    if (!res.ok) throw new Error("HTTP " + res.status);
+                    return res.json();
+                })
+                .then(function (data) {
+                    if (data.ok) {
+                        launchConfetti();
+                        afficheNote(data.message, false);
+                        form.reset();
+                    } else {
+                        afficheNote(data.message, true);
+                    }
+                })
+                .catch(function () {
+                    // Serveur sans PHP (preview) ou erreur réseau : repli client mail.
+                    repliMailto();
+                });
         });
     }
 

@@ -57,7 +57,7 @@
       "url": "https://latelierberlingot.com/",
       "logo": "https://latelierberlingot.com/assets/logo-official.svg",
       "image": "https://latelierberlingot.com/assets/og-cover.png",
-      "email": "contact@latelierberlingot.com",
+      "email": "eaje.atelierberlingot@gmail.com",
       "telephone": "+33953963348",
       "foundingDate": "2009-05",
       "priceRange": "€€",
@@ -519,7 +519,7 @@
                 </div>
             </div>
 
-            <form class="contact-form" novalidate>
+            <form class="contact-form" method="post" action="envoi.php" novalidate>
                 <h3>Écrivez-nous un mot</h3>
                 <div class="field">
                     <label for="cf-name">Votre nom</label>
@@ -536,6 +536,11 @@
                 <div class="field">
                     <label for="cf-msg">Votre message</label>
                     <textarea id="cf-msg" name="message" rows="4" required></textarea>
+                </div>
+                <!-- Honeypot anti-spam : champ invisible que seuls les robots remplissent. -->
+                <div class="hp-field" aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;">
+                    <label for="cf-website">Laissez ce champ vide</label>
+                    <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off">
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Envoyer le message</button>
                 <p class="form-note" role="status" aria-live="polite"></p>
