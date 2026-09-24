@@ -676,7 +676,7 @@ strong { color: var(--c-ink); font-weight: 700; }
 /* ---------- Cards tarifaires ---------- */
 .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
     margin-bottom: 20px;
 }
@@ -698,7 +698,6 @@ strong { color: var(--c-ink); font-weight: 700; }
 }
 .pricing-grid .pricing-card:nth-child(1) .card-icon { background: linear-gradient(135deg, var(--c-yellow), var(--c-pink)); }
 .pricing-grid .pricing-card:nth-child(2) .card-icon { background: linear-gradient(135deg, var(--c-mint), var(--c-lilac)); }
-.pricing-grid .pricing-card:nth-child(3) .card-icon { background: linear-gradient(135deg, var(--c-coral), var(--c-yellow)); }
 .pricing-card h3 { font-size: 1.2rem; margin-bottom: .5rem; }
 .pricing-card p { color: var(--c-ink-soft); margin: 0 0 .75rem; font-size: .97rem; }
 .pricing-eg {
