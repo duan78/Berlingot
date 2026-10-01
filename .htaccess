@@ -4,6 +4,9 @@
 # Pas de listing des dossiers (ex. /assets/).
 Options -Indexes
 
+# Journal anti-spam : totalement inaccessible par le web (404, n'en révèle pas l'existence).
+RedirectMatch 404 ^/\.antispam(/|$)
+
 # UTF-8 par défaut sur tout le site.
 AddDefaultCharset UTF-8
 

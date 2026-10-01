@@ -75,6 +75,11 @@
     if (form) {
         var note = form.querySelector(".form-note");
 
+        // Anti-spam : enregistre l'instant d'affichage du formulaire ; le serveur
+        // refuse les soumissions trop rapides (remplissage humain = plusieurs secondes).
+        var tsField = form.querySelector("#cf-ts");
+        if (tsField) tsField.value = String(Date.now());
+
         // Message de retour après une soumission sans JavaScript (redirection envoi.php).
         var statut = new URLSearchParams(location.search).get("statut");
         if (statut === "ok" || statut === "erreur") {

@@ -537,11 +537,17 @@
                     <label for="cf-msg">Votre message</label>
                     <textarea id="cf-msg" name="message" rows="4" required></textarea>
                 </div>
-                <!-- Honeypot anti-spam : champ invisible que seuls les robots remplissent. -->
-                <div class="hp-field" aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;">
+                <!-- Anti-spam : deux champs invisibles (honeypots) que seuls les robots
+                     remplissent, et jeton temporel (instant d'affichage du formulaire). -->
+                <div class="hp-field" aria-hidden="true">
                     <label for="cf-website">Laissez ce champ vide</label>
                     <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off">
                 </div>
+                <div class="hp-field" aria-hidden="true">
+                    <label for="cf-societe">Société</label>
+                    <input type="text" id="cf-societe" name="societe" tabindex="-1" autocomplete="off">
+                </div>
+                <input type="hidden" name="ts" id="cf-ts" value="">
                 <button type="submit" class="btn btn-primary btn-block">Envoyer le message</button>
                 <p class="form-note" role="status" aria-live="polite"></p>
             </form>

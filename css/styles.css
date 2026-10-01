@@ -1003,3 +1003,16 @@ strong { color: var(--c-ink); font-weight: 700; }
     .space-row { grid-template-columns: 1fr; }
     .space-row--reverse .space-photo { order: 0; }
 }
+
+/* ========================= ANTI-SPAM ========================= */
+/* Honeypots du formulaire : hors écran et invisibles pour les
+   humains, mais présents dans le code pour piéger les robots. */
+.hp-field {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+}
